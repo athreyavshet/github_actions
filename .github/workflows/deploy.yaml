@@ -6,8 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-python@v4
         with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+          node-version: '3.9'
+          cache: 'pip' #caching pip dependencies
+          
+      - run: pip install Flask
+      - run: python -m flask run --host=0.0.0.0
+      
+      #["python3", "-m", "flask", "run", "--host=0.0.0.0"]
