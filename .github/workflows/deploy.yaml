@@ -2,18 +2,18 @@ name: demo-deployment
 
 on: [push]
 
-  jobs:
-  
-  check-bats-version:
-  runs-on: ubuntu-latest
+jobs:
 
-  steps:
-    - uses: actions/checkout@v3
+check-bats-version:
+runs-on: ubuntu-latest
 
-    - uses: actions/setup-node@v3
-      with: 
-        node-version: '14'
+steps:
+  - uses: actions/checkout@v3
 
-    - runs: npm install -g bats
+  - uses: actions/setup-node@v3
+    with: 
+      node-version: '14'
 
-    - run: bats -v
+  - runs: npm install -g bats
+
+  - run: bats -v
