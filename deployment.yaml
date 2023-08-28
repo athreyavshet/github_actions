@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: github-actions
+  labels:
+    app: simple-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-app
+  template:
+    metadata:
+      labels:
+        app: simple-app
+    spec:
+      containers:
+      - name: github-actions
+        image: 944456950944.dkr.ecr.ap-south-1.amazonaws.com/github_actions@sha256:5eb2c37d290d73004ee207194bd9b46e679a14d7e188b6ebb66ada782c281a1f
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+    
+    
