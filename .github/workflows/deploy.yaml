@@ -20,18 +20,20 @@ jobs:
             python -m pip install --upgrade pip
             if [-f requirements.txt]; then pip install -r requirements.txt; fi
 
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v2.0
+        with:
+          version: 'v1.24.0' # default is latest stable 
+        id: install
+
+      - name: Load secrets and save to app.env
+        run: aws secretsmanager get-secret-value --secret-id simple_bank --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > app.env
+
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::944456950944:role/github-aws
           aws-region: ap-south-1
-      
-      - name: Install kubectl
-        uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-        with:
-          args: get pods
         
       - name: Login to Amazon ECR
         id: login-ecr
@@ -53,5 +55,6 @@ jobs:
 
       - name: Deploy to EKS 
         run: |
+            kubectl apply -f aws-auth.yaml
             kubectl apply -f deployment.yaml
             kubectl apply -f service.yaml  
