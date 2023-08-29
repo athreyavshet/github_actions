@@ -21,10 +21,11 @@ jobs:
             if [-f requirements.txt]; then pip install -r requirements.txt; fi
 
       - name: Install kubectl
-        uses: azure/setup-kubectl@v2.0
+        uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          version: 'v1.24.0' # default is latest stable 
-        id: install
+          args: get pods
 
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v2
